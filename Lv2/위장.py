@@ -1,7 +1,5 @@
 def solution(clothes):
     from collections import defaultdict
-    from functools import reduce
-    import operator
     check = defaultdict(int)
     
     for v, k in clothes:
