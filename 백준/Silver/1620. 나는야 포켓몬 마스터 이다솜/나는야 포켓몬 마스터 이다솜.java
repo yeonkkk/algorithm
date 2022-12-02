@@ -39,7 +39,7 @@ public class Main {
      * @param pokemonsByNum : 포켓몬 도감 맵 (key 가 포켓몬 번호)
      * @param problem: 문제의 입력 값 (포켓몬 이름 또는 포켓몬 번호)
      *
-     * problem 이 영문이면 인덱스 번호 + 1을 출력하고, 그게 아니라면 번호 - 1 을 인덱스로 하여 도감에서 포켓몬을 찾아 출력한다.
+     * problem 이 영문이면 pokemonsByStr에서 값을 찾고, 그게 아니라면 pokemonByNum에서 포켓몬을 찾아 출력한다.
      */
     public static void solve(Map<String, Integer> pokemonsByStr, Map<Integer, String> pokemonsByNum, String problem) {
         if (Character.isAlphabetic(problem.charAt(0))) {
