@@ -6,7 +6,7 @@ class Solution {
     public int solution(int n, int k) {
         int answer = 0;
         answer += n * DINNER_PRICE;
-        answer += (k - n / FREE_DRINK_STANDARD >= 0 ? k - n / FREE_DRINK_STANDARD : 0) * DRINK_PRICE;
+        answer += (k - n / FREE_DRINK_STANDARD) * DRINK_PRICE;
         return answer;
     }
 }
