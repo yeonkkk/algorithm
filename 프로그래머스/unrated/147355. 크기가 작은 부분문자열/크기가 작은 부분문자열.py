@@ -1,7 +1,6 @@
 def solution(t, p):
-    length = len(p)
     left = 0
-    right = left + length
+    right = left + len(p)
     count = 0
     
     while right <= len(t):
