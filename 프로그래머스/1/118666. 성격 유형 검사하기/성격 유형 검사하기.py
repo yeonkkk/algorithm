@@ -23,9 +23,12 @@ def solution(survey, choices):
     
     answer = ''
     for type_pair in types:
-        if score[type_pair[0]] > score[type_pair[1]]:
+        type1_score = score[type_pair[0]]
+        type2_score = score[type_pair[1]]
+
+        if type1_score > type2_score:
             answer += type_pair[0]
-        elif score[type_pair[0]] < score[type_pair[1]]:
+        elif type1_score < type2_score:
             answer += type_pair[1]
         else:
             answer += sorted(type_pair)[0]
