@@ -23,5 +23,8 @@ for c in input_str:
         result += "AAAA" * (count // 4) + "BB" * ((count % 4) // 2)
         result += c
         count = 0
-        
-print(result)
+
+if count % 2 != 0:
+    print(-1)
+else:      
+    print(result)
