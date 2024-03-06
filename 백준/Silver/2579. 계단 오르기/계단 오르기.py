@@ -1,19 +1,20 @@
 import sys
 
-input = sys.stdin.readline
+'''
+문제: 계단 오르기 (실버3)
+분류: dp
+'''
 
-n = int(input())
-nums = [int(input()) for _ in range(n)]
-dp = [0] * 300
-dp[0] = nums[0]
+n = int(sys.stdin.readline())
+stairs = [int(sys.stdin.readline()) for _ in range(n)]
+dp = [0] * (n)
 
-if n > 1:
-    dp[1] = nums[0] + nums[1]
+# 1, 2, 3 번째 값
+dp[0] = stairs[0]
+if 1 < n: dp[1] = max(stairs[1], stairs[0] + stairs[1])
+if 2 < n: dp[2] = max(stairs[0] + stairs[2], stairs[1] + stairs[2])
 
-if n > 2:
-    dp[2] = max(nums[0] + nums[2], nums[1] + nums[2])
-
-    for i in range(3, n):
-        dp[i] = max(dp[i-3] + nums[i-1] + nums[i], dp[i-2] + nums[i])
+for i in range(3, n):
+    dp[i] = max(dp[i-2] + stairs[i], dp[i-3] + stairs[i-1] + stairs[i])
 
 print(dp[n-1])
