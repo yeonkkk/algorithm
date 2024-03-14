@@ -5,29 +5,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        Map<Long, Integer> count = new HashMap<>();
-        Long maxKey = 0L;
-        int maxCount = 0;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            int n = Integer.parseInt(reader.readLine());
 
-        for (int i = 0; i < n; i++) {
-            Long card = Long.valueOf(br.readLine());
-            count.put(card, count.getOrDefault(card, 0) + 1);
-        }
+            Map<Long, Integer> numberCounter = new HashMap<>();
 
-        for (Long key : count.keySet()) {
-            int curValue = count.get(key);
-            if (curValue == maxCount) {
-                maxKey = maxKey < key ? maxKey : key;
-                continue;
-            } else if (maxCount < curValue) {
-                maxCount = curValue;
-                maxKey = key;
+            long maxKey = 0L;
+            int maxValue = 0;
+            for (int i = 0; i < n; i++) {
+                long key = Long.parseLong(reader.readLine());
+                int value = numberCounter.getOrDefault(key, 0) + 1;
+                numberCounter.put(key, value);
+
+                if (maxValue < value) {
+                    maxKey = key;
+                    maxValue = value;
+                    continue;
+                }
+
+                if (maxValue == value) {
+                    maxKey = Math.min(maxKey, key);
+                }
             }
+            System.out.println(maxKey);
         }
-
-        System.out.println(maxKey);
     }
 }
