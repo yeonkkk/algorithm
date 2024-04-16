@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-
 public class Main {
 
     public static void main(String[] args) throws IOException {
@@ -49,10 +48,6 @@ public class Main {
     }
 
     private static long countCable(long target, long[]cables) {
-        if (target == 0) {
-            return 0;
-        }
-
         return Arrays.stream(cables)
                 .map(current -> current / target)
                 .sum();
