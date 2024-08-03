@@ -1,46 +1,38 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Main {
 
+    private static String solution(int n, String[] files) {
+        Map<String, Integer> extensionCounter = new HashMap<>();
+
+        for (String file : files) {
+            String extension = file.split("\\.")[1];
+            extensionCounter.put(extension, extensionCounter.getOrDefault(extension, 0) + 1);
+        }
+
+        return extensionCounter.keySet().stream()
+                .sorted()
+                .map(key -> key + " " + extensionCounter.get(key))
+                .collect(Collectors.joining("\n"));
+    }
+
     public static void main(String[] args) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        try (reader) {
             int n = Integer.parseInt(reader.readLine());
-            List<String> fileNames = new ArrayList<>();
+            String[] files = new String[n];
 
             for (int i = 0; i < n; i++) {
-                fileNames.add(reader.readLine());
+                files[i] = reader.readLine().strip();
             }
 
-            System.out.println(solution(fileNames));
+            System.out.println(solution(n, files));
         }
-    }
-
-    private static String solution(List<String> fileNames) {
-        SortedMap<String, Integer> extensionCount = countExtension(fileNames);
-        StringBuilder result = new StringBuilder();
-
-        for (Entry<String, Integer> entry : extensionCount.entrySet()) {
-            result.append(String.format("%s %d%s", entry.getKey(), entry.getValue(), "\n"));
-        }
-
-        return result.toString();
-    }
-
-    private static SortedMap<String, Integer> countExtension(List<String> fileNames) {
-        SortedMap<String, Integer> extensionCount = new TreeMap<>();
-
-        for (String fileName : fileNames) {
-            String extension = fileName.split("\\.")[1];
-            extensionCount.put(extension, extensionCount.getOrDefault(extension, 0) + 1);
-        }
-
-        return extensionCount;
     }
 }
