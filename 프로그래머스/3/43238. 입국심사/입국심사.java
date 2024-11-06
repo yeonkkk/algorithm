@@ -1,32 +1,36 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
-    
+
     public long solution(int n, int[] times) {
         Arrays.sort(times);
 
         long left = 0;
         long right = (long) times[times.length - 1] * n;
-        long minTotalTime = Long.MAX_VALUE;
+        long min = right;
 
         while (left <= right) {
             long mid = (left + right) / 2;
-            long countPeople = countPeople(times, mid);
+            boolean isPossible = isPossible(mid, times, n);
 
-            if (countPeople < n) {
-                left = mid + 1;
-            } else {
-                minTotalTime = Math.min(minTotalTime, mid);
+            if (isPossible) {
+                min = Math.min(min, mid);
                 right = mid - 1;
+            } else {
+                left = mid + 1;    
             }
         }
-        
-        return minTotalTime;
+
+        return min;
     }
 
-    private long countPeople(int[] times, long totalTime) {
-        return Arrays.stream(times)
-                .mapToLong(time -> totalTime / time)
-                .sum();
+    private boolean isPossible(long totalTime, int[] times, int n) {
+        long count = 0;
+
+        for (int time : times) {
+            count += totalTime / time;
+        }
+
+        return count >= n;
     }
 }
