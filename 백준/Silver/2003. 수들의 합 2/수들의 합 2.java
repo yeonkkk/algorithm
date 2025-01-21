@@ -1,49 +1,51 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.io.*;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            int m = Integer.parseInt(reader.readLine().split(" ")[1]);
-            int[] numbers = readNumbers(reader);
+        // input
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-            System.out.println(solution(numbers, m));
-        }
-    }
+        String[] firstLine = reader.readLine().split(" ");
 
-    private static int solution(int[] numbers, int m) {
-        int left = 0;
-        int right = 0;
-        int currentSum = 0;
-        int count = 0;
+        int N = Integer.parseInt(firstLine[0]);
+        int M = Integer.parseInt(firstLine[1]);
 
-        while (left <= right && right < numbers.length) {
-            if (currentSum < m) {
-                currentSum += numbers[right];
-                right++;
-            }
+        String[] secondLine = reader.readLine().split(" ");
+        int[] numbers = new int[N];
 
-            if (currentSum > m) {
-                currentSum -= numbers[left];
-                left++;
-            }
-
-            if (currentSum == m) {
-                count++;
-                currentSum -= numbers[left];
-                left++;
-            }
+        for (int i = 0; i < N; i++) {
+            numbers[i] = Integer.parseInt(secondLine[i]);
         }
 
-        return count;
+        System.out.println(solution(N, M, numbers));
     }
 
-    private static int[] readNumbers(BufferedReader reader) throws IOException {
-        return Arrays.stream(reader.readLine().split(" "))
-                .mapToInt(Integer::parseInt)
-                .toArray();
+    private static int solution(int N, int M, int[] numbers) {
+        int answer = 0;
+        int start = 0;
+        int end = 0;
+        int sum = numbers[start];
+
+        while (end < N) {
+            if (sum < M) {
+                end++;
+                
+                if (end < N) {
+                    sum += numbers[end];
+                }
+            }
+
+            if (sum == M) {
+                answer++;
+                sum -= numbers[start++];
+            }
+
+            if (sum > M) {
+                sum -= numbers[start++];
+            }
+        }
+
+        return answer;
     }
 }
