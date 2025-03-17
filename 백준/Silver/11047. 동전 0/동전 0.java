@@ -1,36 +1,37 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] str = br.readLine().split(" ");
-        int n = Integer.parseInt(str[0]);
-        int k = Integer.parseInt(str[1]);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        List<Integer> inputs = new ArrayList<>();
-        int count = 0;
+        /* input */
+        String[] firstLine = reader.readLine().split(" ");
+        int N = Integer.parseInt(firstLine[0]);
+        int K = Integer.parseInt(firstLine[1]);
+        int[] coins = new int[N];
 
-        for (int i = 0; i < n; i++) {
-            int cur = Integer.parseInt(br.readLine());
-
-            if (cur <= k) {
-                inputs.add(cur);
-            }
+        for (int i = 0; i < N; i++) {
+            coins[i] = Integer.parseInt(reader.readLine());
         }
 
-        for (int i = inputs.size() - 1; 0 <= i; i--) {
-            count += k / inputs.get(i);
-            k %= inputs.get(i);
+        System.out.println(solution(N, K, coins));
+    }
 
-            if (k == 0) {
-                break;
-            }
+    private static int solution(int N, int K, int[] coins) {
+        int answer = 0;
+
+        for (int i = N - 1; i >= 0; i--) {
+            int coin = coins[i];
+
+            answer += K / coin;
+            K %= coin;
+
+            if (K == 0) {
+                return answer;
+            } 
         }
 
-        System.out.println(count);
+        return answer;
     }
 }
