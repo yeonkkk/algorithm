@@ -1,44 +1,55 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+
+import java.io.*;
+import java.util.*;
 
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = Arrays.stream(br.readLine().split(" "))
-                .mapToInt(Integer::parseInt)
-                .sorted()
-                .toArray();
 
-        int m = Integer.parseInt(br.readLine());
-        StringTokenizer st = new StringTokenizer(br.readLine());
+    private static String solution(int[] numbers, int[] targets) {
+        StringBuilder result = new StringBuilder();
 
-        for (int i = 0; i < m; i++) {
-            int target = Integer.parseInt(st.nextToken());
-            System.out.println(binarySearch(arr, target));
+        for (int target : targets) {
+            result.append(contains(target, numbers)).append("\n");
         }
+
+        return result.toString();
     }
 
-    public static int binarySearch(int[] arr, int target) {
+    private static int contains(int target, int[] numbers) {
         int left = 0;
-        int right = arr.length - 1;
+        int right = numbers.length - 1;
 
         while (left <= right) {
             int mid = (left + right) / 2;
-            int midValue = arr[mid];
+            int current = numbers[mid];
 
-            if (arr[mid] < target) {
+            if (current < target) {
                 left = mid + 1;
-            } else if (target < midValue) {
+            } else if(current > target) {
                 right = mid - 1;
             } else {
                 return 1;
             }
         }
         return 0;
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        /* input */
+        int n = Integer.parseInt(reader.readLine());
+        int[] numbers = Arrays.stream(reader.readLine().split(" "))
+                .mapToInt(Integer::parseInt)
+                .sorted() // 정렬
+                .toArray();
+
+        int m = Integer.parseInt(reader.readLine());
+        int[] targets = Arrays.stream(reader.readLine().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+
+        /* output */
+        System.out.println(solution(numbers, targets));
     }
 }
