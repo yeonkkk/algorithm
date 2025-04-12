@@ -1,51 +1,65 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.util.*;
 
+
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        boolean[] check = new boolean[n + 1];
-        Map<Integer, List<Integer>> graph = new HashMap<>();
 
-        int m = Integer.parseInt(br.readLine());
-        int count = -1;
+    private static List<List<Integer>> graph = new ArrayList<>();
+    private static boolean[] visited;
 
-        for (int i = 0; i < m; i++) {
-            String input = br.readLine();
-            int val1 = Integer.parseInt(input.split(" ")[0]);
-            int val2 = Integer.parseInt(input.split(" ")[1]);
-
-            updateValue(graph, val1, val2);
-            updateValue(graph, val2, val1);
+    private static void dfs(int node) {
+        if (visited[node]) {
+            return;
         }
 
-        Stack<Integer> stack = new Stack<>();
-        stack.push(1);
+        visited[node] = true;
 
-        while (!stack.isEmpty()) {
-            int cur = stack.pop();
-
-            if (check[cur]) {
-                continue;
-            }
-
-            check[cur] = true;
-            count++;
-
-            for (int node : graph.get(cur)) {
-                stack.push(node);
-            }
+        for (int linkedNode : graph.get(node)) {
+            dfs(linkedNode);
         }
-        System.out.println(count);
     }
 
-    public static void updateValue(Map<Integer, List<Integer>> map, int val1, int val2) {
-        if (!map.containsKey(val1)) {
-            map.put(val1, new ArrayList<>());
+    public static void main(String[] args) throws IOException {
+        /* input */
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(reader.readLine());
+        int m = Integer.parseInt(reader.readLine());
+
+        /* 그래프 생성 */
+        buildGraph(n, m, reader);
+        visited = new boolean[n + 1];
+
+        /* dfs 실행 */
+        dfs(0);
+
+        /* 방문 노드 카운트(시작 노드 제외) */
+        int answer = countVisited() - 1;
+
+        /* output */
+        System.out.println(answer);
+    }
+
+    private static void buildGraph(int n, int m, BufferedReader reader) throws IOException {
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
         }
-        map.get(val1).add(val2);
+
+        for (int i = 0; i < m; i++) {
+            String[] inputLine = reader.readLine().split(" ");
+            int node1 = Integer.parseInt(inputLine[0]) - 1;
+            int node2 = Integer.parseInt(inputLine[1]) - 1;
+
+            graph.get(node1).add(node2);
+            graph.get(node2).add(node1);
+        }
+    }
+
+    private static int countVisited() {
+        int count = 0;
+        for (boolean result : visited) {
+            if (result) count++;
+        }
+        return count;
     }
 }
