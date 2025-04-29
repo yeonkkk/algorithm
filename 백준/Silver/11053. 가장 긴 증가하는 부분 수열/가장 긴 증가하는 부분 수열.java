@@ -1,36 +1,44 @@
 import java.io.*;
-import java.util.*;
 
 public class Main {
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		int n = Integer.parseInt(br.readLine());
-		int arr[] = new int[n];
-		int d[] = new int[n];
+    private static int solution(int[] numbers, int n) {
+        int[] counter = new int[n];
 
-		StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            int current = numbers[i];
 
-		for (int i = 0; i < n; i++) {
-			arr[i] = Integer.parseInt(st.nextToken());
-		}
+            // 초기화
+            counter[i] = 1;
 
-		d[0] = 1;
+            for (int j = 0; j < i; j++) {
+                int other = numbers[j];
 
-		for (int i = 1; i < n; i++) {
-			d[i] = 1;
-			for (int j = 0; j < i; j++) {
-				if (arr[j] < arr[i] && d[i] <= d[j]) {
-					d[i] = d[j] + 1;
-				}
-			}
-		}
+                if (current > other) {
+                    counter[i] = Math.max(counter[i], counter[j] + 1);
+                }
+            }
+        }
 
-		int max = 0;
-		for (int i : d) {
-			max = Math.max(max, i);
-		}
+        // max 값 탐색
+        int answer = 0;
+        for (int count : counter) {
+            answer = Math.max(answer, count);
+        }
+        return answer;
+    }
 
-		System.out.println(max);
-	}
+    public static void main(String[] args) throws IOException {
+        /* input */
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(reader.readLine());
+        String[] stringNumbers = reader.readLine().split(" ");
+        int[] numbers = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            numbers[i] = Integer.parseInt(stringNumbers[i]);
+        }
+
+        System.out.println(solution(numbers, n));
+    }
 }
